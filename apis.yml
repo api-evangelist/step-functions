@@ -1,0 +1,41 @@
+aid: step-functions
+name: AWS Step Functions
+description: >-
+  AWS Step Functions is a serverless orchestration service for composing
+  distributed applications and APIs using visual workflows and state machines.
+type: Index
+image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+tags:
+  - API Composition
+  - Serverless Orchestration
+  - Workflow
+url: >-
+  https://raw.githubusercontent.com/api-evangelist/step-functions/refs/heads/main/apis.yml
+created: '2026-03-27'
+modified: '2026-03-27'
+specificationVersion: '0.19'
+apis:
+  - aid: step-functions:step-functions
+    name: AWS Step Functions
+    description: >-
+      AWS Step Functions is a serverless orchestration service for composing
+      distributed applications and APIs using visual workflows and state machines.
+    humanURL: https://aws.amazon.com/step-functions/
+    tags:
+      - API Composition
+      - Serverless Orchestration
+    properties:
+      - type: Documentation
+        url: https://docs.aws.amazon.com/step-functions/
+      - type: Getting Started
+        url: https://docs.aws.amazon.com/step-functions/latest/dg/getting-started.html
+common:
+  - type: Website
+    url: https://aws.amazon.com/step-functions/
+  - type: Documentation
+    url: https://docs.aws.amazon.com/step-functions/
+  - type: GitHub Organization
+    url: https://github.com/aws
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com
