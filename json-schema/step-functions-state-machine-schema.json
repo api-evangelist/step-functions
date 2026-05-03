@@ -1,0 +1,78 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/api-evangelist/step-functions/blob/main/json-schema/step-functions-state-machine-schema.json",
+  "title": "AWS Step Functions State Machine",
+  "description": "Schema for an AWS Step Functions state machine resource",
+  "type": "object",
+  "required": ["stateMachineArn", "name", "definition", "roleArn"],
+  "properties": {
+    "stateMachineArn": {
+      "type": "string",
+      "pattern": "^arn:[a-z0-9-]+:states:[a-z0-9-]+:[0-9]{12}:stateMachine:.+$",
+      "description": "Amazon Resource Name (ARN) identifying the state machine"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 80,
+      "description": "State machine name"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["ACTIVE", "DELETING"],
+      "description": "Current lifecycle status"
+    },
+    "definition": {
+      "type": "string",
+      "description": "Amazon States Language JSON definition"
+    },
+    "roleArn": {
+      "type": "string",
+      "description": "IAM role ARN granting Step Functions execution permissions"
+    },
+    "type": {
+      "type": "string",
+      "enum": ["STANDARD", "EXPRESS"],
+      "description": "State machine execution model"
+    },
+    "creationDate": {
+      "type": "number",
+      "description": "Unix epoch timestamp of creation"
+    },
+    "loggingConfiguration": {
+      "type": "object",
+      "description": "CloudWatch Logs configuration",
+      "properties": {
+        "level": {
+          "type": "string",
+          "enum": ["ALL", "ERROR", "FATAL", "OFF"]
+        },
+        "includeExecutionData": {
+          "type": "boolean"
+        }
+      }
+    },
+    "tracingConfiguration": {
+      "type": "object",
+      "description": "AWS X-Ray tracing configuration",
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        }
+      }
+    },
+    "label": {
+      "type": "string",
+      "description": "Human-readable label"
+    },
+    "revisionId": {
+      "type": "string",
+      "description": "Current revision identifier"
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 256,
+      "description": "State machine description"
+    }
+  }
+}

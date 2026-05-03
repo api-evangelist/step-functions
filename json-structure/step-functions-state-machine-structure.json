@@ -1,0 +1,69 @@
+{
+  "title": "AWS Step Functions State Machine Structure",
+  "description": "Field structure documentation for AWS Step Functions state machine objects",
+  "type": "object",
+  "fields": [
+    {
+      "name": "stateMachineArn",
+      "type": "string",
+      "required": true,
+      "description": "AWS ARN uniquely identifying the state machine"
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "required": true,
+      "description": "State machine name (1-80 characters, no special chars)"
+    },
+    {
+      "name": "status",
+      "type": "enum",
+      "values": ["ACTIVE", "DELETING"],
+      "required": false,
+      "description": "Lifecycle status"
+    },
+    {
+      "name": "definition",
+      "type": "string",
+      "required": true,
+      "description": "Amazon States Language JSON workflow definition"
+    },
+    {
+      "name": "roleArn",
+      "type": "string",
+      "required": true,
+      "description": "IAM role ARN used during execution"
+    },
+    {
+      "name": "type",
+      "type": "enum",
+      "values": ["STANDARD", "EXPRESS"],
+      "required": false,
+      "description": "Execution model: STANDARD for long-running, EXPRESS for high-volume"
+    },
+    {
+      "name": "creationDate",
+      "type": "timestamp",
+      "required": false,
+      "description": "Unix epoch creation timestamp"
+    },
+    {
+      "name": "loggingConfiguration",
+      "type": "object",
+      "required": false,
+      "description": "CloudWatch Logs configuration (level, destinations)"
+    },
+    {
+      "name": "tracingConfiguration",
+      "type": "object",
+      "required": false,
+      "description": "X-Ray tracing toggle"
+    },
+    {
+      "name": "description",
+      "type": "string",
+      "required": false,
+      "description": "Human-readable description (max 256 chars)"
+    }
+  ]
+}

@@ -1,0 +1,84 @@
+extends: spectral:oas
+rules:
+  step-functions-operation-summary-title-case:
+    description: All operation summaries must use Title Case
+    message: "Operation summary '{{value}}' must use Title Case"
+    severity: warn
+    given: "$.paths[*][*].summary"
+    then:
+      function: pattern
+      functionOptions:
+        match: "^[A-Z][a-zA-Z0-9]*(\\s[A-Z][a-zA-Z0-9]*)*$"
+
+  step-functions-tags-required:
+    description: All operations must have at least one tag
+    message: Operations must include tags for categorization
+    severity: error
+    given: "$.paths[*][*]"
+    then:
+      field: tags
+      function: truthy
+
+  step-functions-operation-id-camel-case:
+    description: OperationIds should use camelCase
+    message: "OperationId '{{value}}' should use camelCase"
+    severity: warn
+    given: "$.paths[*][*].operationId"
+    then:
+      function: pattern
+      functionOptions:
+        match: "^[a-z][a-zA-Z0-9]*$"
+
+  step-functions-response-200-required:
+    description: All POST operations must return a 200 response
+    message: POST operations must define a 200 response
+    severity: error
+    given: "$.paths[*].post"
+    then:
+      field: responses.200
+      function: truthy
+
+  step-functions-content-type-json:
+    description: AWS Step Functions API uses application/x-amz-json-1.0 content type
+    message: Request body should use application/x-amz-json-1.0 content type
+    severity: warn
+    given: "$.paths[*][*].requestBody.content"
+    then:
+      field: "application/x-amz-json-1.0"
+      function: defined
+
+  step-functions-security-defined:
+    description: All operations should define security requirements
+    message: Operations should specify AWS SigV4 security
+    severity: warn
+    given: "$.paths[*][*]"
+    then:
+      field: security
+      function: defined
+
+  step-functions-descriptions-required:
+    description: All operations must have descriptions
+    message: Operations must include descriptions
+    severity: error
+    given: "$.paths[*][*]"
+    then:
+      field: description
+      function: truthy
+
+  step-functions-parameters-described:
+    description: All parameters should have descriptions
+    message: "Parameter is missing a description"
+    severity: warn
+    given: "$.paths[*][*].parameters[*]"
+    then:
+      field: description
+      function: truthy
+
+  step-functions-schemas-have-descriptions:
+    description: Schema properties should have descriptions
+    message: Schema property should have a description
+    severity: info
+    given: "$.components.schemas[*].properties[*]"
+    then:
+      field: description
+      function: truthy

@@ -1,0 +1,25 @@
+{
+  "title": "Start Execution",
+  "description": "Example request/response for starting an AWS Step Functions state machine execution",
+  "request": {
+    "method": "POST",
+    "url": "https://states.us-east-1.amazonaws.com/",
+    "headers": {
+      "Content-Type": "application/x-amz-json-1.0",
+      "X-Amz-Target": "AmazonStates.StartExecution",
+      "Authorization": "AWS4-HMAC-SHA256 Credential=..."
+    },
+    "body": {
+      "stateMachineArn": "arn:aws:states:us-east-1:123456789012:stateMachine:MyOrderWorkflow",
+      "name": "order-12345-2026-05-02",
+      "input": "{\"orderId\": \"12345\", \"customerId\": \"cust-001\", \"amount\": 99.99}"
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "executionArn": "arn:aws:states:us-east-1:123456789012:execution:MyOrderWorkflow:order-12345-2026-05-02",
+      "startDate": 1746180000.0
+    }
+  }
+}

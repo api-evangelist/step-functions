@@ -1,0 +1,36 @@
+{
+  "title": "List State Machines",
+  "description": "Example request/response for listing AWS Step Functions state machines",
+  "request": {
+    "method": "POST",
+    "url": "https://states.us-east-1.amazonaws.com/",
+    "headers": {
+      "Content-Type": "application/x-amz-json-1.0",
+      "X-Amz-Target": "AmazonStates.ListStateMachines",
+      "Authorization": "AWS4-HMAC-SHA256 Credential=..."
+    },
+    "body": {
+      "maxResults": 10
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "stateMachines": [
+        {
+          "stateMachineArn": "arn:aws:states:us-east-1:123456789012:stateMachine:MyOrderWorkflow",
+          "name": "MyOrderWorkflow",
+          "type": "STANDARD",
+          "creationDate": 1745000000.0
+        },
+        {
+          "stateMachineArn": "arn:aws:states:us-east-1:123456789012:stateMachine:MyExpressProcessor",
+          "name": "MyExpressProcessor",
+          "type": "EXPRESS",
+          "creationDate": 1745500000.0
+        }
+      ],
+      "nextToken": null
+    }
+  }
+}

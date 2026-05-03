@@ -1,0 +1,447 @@
+naftiko: "1.0.0-alpha1"
+
+info:
+  label: "AWS Step Functions API"
+  description: >-
+    AWS Step Functions API for creating and managing state machines, starting
+    and monitoring executions, managing activity workers, versioning, and aliasing.
+  tags:
+    - AWS
+    - Step Functions
+    - Serverless
+    - Workflow
+    - State Machine
+    - Orchestration
+  created: "2026-05-02"
+  modified: "2026-05-02"
+
+binds:
+  - namespace: env
+    keys:
+      AWS_ACCESS_KEY_ID: AWS_ACCESS_KEY_ID
+      AWS_SECRET_ACCESS_KEY: AWS_SECRET_ACCESS_KEY
+      AWS_REGION: AWS_REGION
+
+capability:
+  consumes:
+    - type: http
+      namespace: step-functions
+      baseUri: "https://states.{{env.AWS_REGION}}.amazonaws.com"
+      description: "AWS Step Functions regional API endpoint"
+      authentication:
+        type: apikey
+        key: Authorization
+        value: "{{env.AWS_SIGV4_AUTH}}"
+        placement: header
+      resources:
+        - name: state-machines
+          path: /
+          description: State machine management via AWS JSON protocol
+          operations:
+            - name: create-state-machine
+              method: POST
+              description: Create a new state machine
+              inputParameters:
+                - name: X-Amz-Target
+                  in: header
+                  type: string
+                  required: true
+                  description: "AmazonStates.CreateStateMachine"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+              body:
+                type: json
+                data:
+                  name: "{{tools.name}}"
+                  definition: "{{tools.definition}}"
+                  roleArn: "{{tools.roleArn}}"
+                  type: "{{tools.type}}"
+
+            - name: list-state-machines
+              method: POST
+              description: List all state machines
+              inputParameters:
+                - name: X-Amz-Target
+                  in: header
+                  type: string
+                  required: true
+                  description: "AmazonStates.ListStateMachines"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+            - name: describe-state-machine
+              method: POST
+              description: Describe a specific state machine
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+              body:
+                type: json
+                data:
+                  stateMachineArn: "{{tools.stateMachineArn}}"
+
+            - name: update-state-machine
+              method: POST
+              description: Update a state machine definition or configuration
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+              body:
+                type: json
+                data:
+                  stateMachineArn: "{{tools.stateMachineArn}}"
+                  definition: "{{tools.definition}}"
+
+            - name: delete-state-machine
+              method: POST
+              description: Delete a state machine
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+              body:
+                type: json
+                data:
+                  stateMachineArn: "{{tools.stateMachineArn}}"
+
+            - name: start-execution
+              method: POST
+              description: Start a state machine execution
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+              body:
+                type: json
+                data:
+                  stateMachineArn: "{{tools.stateMachineArn}}"
+                  name: "{{tools.name}}"
+                  input: "{{tools.input}}"
+
+            - name: start-sync-execution
+              method: POST
+              description: Start a synchronous Express workflow execution
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+              body:
+                type: json
+                data:
+                  stateMachineArn: "{{tools.stateMachineArn}}"
+                  input: "{{tools.input}}"
+
+            - name: stop-execution
+              method: POST
+              description: Stop a running state machine execution
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+              body:
+                type: json
+                data:
+                  executionArn: "{{tools.executionArn}}"
+                  error: "{{tools.error}}"
+                  cause: "{{tools.cause}}"
+
+            - name: describe-execution
+              method: POST
+              description: Describe a specific execution
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+              body:
+                type: json
+                data:
+                  executionArn: "{{tools.executionArn}}"
+
+            - name: list-executions
+              method: POST
+              description: List executions for a state machine
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+              body:
+                type: json
+                data:
+                  stateMachineArn: "{{tools.stateMachineArn}}"
+                  statusFilter: "{{tools.statusFilter}}"
+
+            - name: get-execution-history
+              method: POST
+              description: Get execution history events
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+              body:
+                type: json
+                data:
+                  executionArn: "{{tools.executionArn}}"
+
+            - name: redrive-execution
+              method: POST
+              description: Redrive a failed or aborted execution
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+              body:
+                type: json
+                data:
+                  executionArn: "{{tools.executionArn}}"
+
+            - name: create-activity
+              method: POST
+              description: Create an activity for worker-based tasks
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+              body:
+                type: json
+                data:
+                  name: "{{tools.name}}"
+
+            - name: list-activities
+              method: POST
+              description: List all activities
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+            - name: get-activity-task
+              method: POST
+              description: Poll for a task from an activity queue
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+              body:
+                type: json
+                data:
+                  activityArn: "{{tools.activityArn}}"
+                  workerName: "{{tools.workerName}}"
+
+            - name: send-task-success
+              method: POST
+              description: Report successful completion of an activity task
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+              body:
+                type: json
+                data:
+                  taskToken: "{{tools.taskToken}}"
+                  output: "{{tools.output}}"
+
+            - name: send-task-failure
+              method: POST
+              description: Report failure of an activity task
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+              body:
+                type: json
+                data:
+                  taskToken: "{{tools.taskToken}}"
+                  error: "{{tools.error}}"
+                  cause: "{{tools.cause}}"
+
+            - name: send-task-heartbeat
+              method: POST
+              description: Send a heartbeat to keep an activity task from timing out
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+              body:
+                type: json
+                data:
+                  taskToken: "{{tools.taskToken}}"
+
+            - name: publish-state-machine-version
+              method: POST
+              description: Publish a new version of a state machine
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+              body:
+                type: json
+                data:
+                  stateMachineArn: "{{tools.stateMachineArn}}"
+                  description: "{{tools.description}}"
+
+            - name: list-state-machine-versions
+              method: POST
+              description: List published versions of a state machine
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+              body:
+                type: json
+                data:
+                  stateMachineArn: "{{tools.stateMachineArn}}"
+
+            - name: create-state-machine-alias
+              method: POST
+              description: Create an alias pointing to a specific version
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+              body:
+                type: json
+                data:
+                  name: "{{tools.name}}"
+                  routingConfiguration: "{{tools.routingConfiguration}}"
+
+            - name: list-state-machine-aliases
+              method: POST
+              description: List aliases for a state machine
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+              body:
+                type: json
+                data:
+                  stateMachineArn: "{{tools.stateMachineArn}}"
+
+            - name: tag-resource
+              method: POST
+              description: Add tags to a Step Functions resource
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+              body:
+                type: json
+                data:
+                  resourceArn: "{{tools.resourceArn}}"
+                  tags: "{{tools.tags}}"
+
+            - name: list-tags-for-resource
+              method: POST
+              description: List tags on a Step Functions resource
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+              body:
+                type: json
+                data:
+                  resourceArn: "{{tools.resourceArn}}"
+
+            - name: validate-state-machine-definition
+              method: POST
+              description: Validate a state machine definition before creating
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+              body:
+                type: json
+                data:
+                  definition: "{{tools.definition}}"
+
+            - name: test-state
+              method: POST
+              description: Test a single state in a state machine definition
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+              body:
+                type: json
+                data:
+                  stateMachineArn: "{{tools.stateMachineArn}}"
+                  name: "{{tools.name}}"
+                  input: "{{tools.input}}"
+
+  exposes:
+    - type: rest
+      port: 8100
+      namespace: step-functions-api
+      resources:
+        - path: /v1/state-machines
+          name: state-machines
+          description: State machine management
+          operations:
+            - method: GET
+              name: list-state-machines
+              description: List all state machines
+            - method: POST
+              name: create-state-machine
+              description: Create a new state machine
+        - path: /v1/executions
+          name: executions
+          description: Execution management
+          operations:
+            - method: POST
+              name: start-execution
+              description: Start a state machine execution
+            - method: GET
+              name: list-executions
+              description: List executions
+
+    - type: mcp
+      port: 9100
+      namespace: step-functions-mcp
+      transport: http
+      tools:
+        - name: list-state-machines
+          description: List all AWS Step Functions state machines
+          hints:
+            readOnly: true
+            openWorld: true
+        - name: start-execution
+          description: Start a state machine execution
+          hints:
+            readOnly: false
+            destructive: false
+        - name: describe-execution
+          description: Get details of a specific execution
+          hints:
+            readOnly: true
+            openWorld: true

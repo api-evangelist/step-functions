@@ -1,0 +1,404 @@
+openapi: 3.0.3
+info:
+  title: AWS Step Functions API
+  description: >-
+    AWS Step Functions API for creating and managing state machines, executing
+    workflows, and coordinating distributed applications using the Amazon States
+    Language. Supports Standard and Express state machine types with versioning,
+    aliases, and activity workers.
+  version: '2016-11-23'
+  contact:
+    name: AWS Support
+    url: https://aws.amazon.com/support/
+  license:
+    name: Amazon Software License
+    url: https://aws.amazon.com/asl/
+servers:
+  - url: https://states.{region}.amazonaws.com
+    description: AWS Step Functions regional endpoint
+    variables:
+      region:
+        description: AWS region identifier
+        default: us-east-1
+        enum:
+          - us-east-1
+          - us-east-2
+          - us-west-1
+          - us-west-2
+          - eu-west-1
+          - eu-central-1
+          - ap-northeast-1
+          - ap-southeast-1
+          - ap-southeast-2
+security:
+  - awsSigV4: []
+tags:
+  - name: State Machines
+    description: Create, describe, update, delete, and list state machines
+  - name: Executions
+    description: Start, stop, describe, and list state machine executions
+  - name: Activities
+    description: Create, describe, delete, and manage activity workers
+  - name: Versions
+    description: Publish and manage state machine versions
+  - name: Aliases
+    description: Create and manage state machine aliases
+  - name: Map Runs
+    description: Describe and update Map state distributed runs
+  - name: Tasks
+    description: Activity worker task polling and completion
+  - name: Tags
+    description: Tag and untag AWS resources
+paths:
+  /:
+    post:
+      operationId: createStateMachine
+      summary: Create State Machine
+      description: >-
+        Creates a state machine. A state machine consists of a collection of states
+        that can do work (Task states), determine transitions (Choice states),
+        stop with an error (Fail states), and more. Optionally publish version 1
+        on creation by setting publish to true.
+      tags:
+        - State Machines
+      parameters:
+        - $ref: '#/components/parameters/XAmzTarget-CreateStateMachine'
+      requestBody:
+        required: true
+        content:
+          application/x-amz-json-1.0:
+            schema:
+              $ref: '#/components/schemas/CreateStateMachineRequest'
+      responses:
+        '200':
+          description: State machine created successfully
+          content:
+            application/x-amz-json-1.0:
+              schema:
+                $ref: '#/components/schemas/CreateStateMachineResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '409':
+          $ref: '#/components/responses/Conflict'
+x-amazon-apigateway-endpoint-configuration:
+  disableExecuteApiEndpoint: false
+paths-extended:
+  listStateMachines:
+    post:
+      operationId: listStateMachines
+      summary: List State Machines
+      description: Lists the existing state machines with pagination support.
+      tags:
+        - State Machines
+      parameters:
+        - $ref: '#/components/parameters/XAmzTarget-ListStateMachines'
+      requestBody:
+        required: false
+        content:
+          application/x-amz-json-1.0:
+            schema:
+              $ref: '#/components/schemas/ListStateMachinesRequest'
+      responses:
+        '200':
+          description: List of state machines
+          content:
+            application/x-amz-json-1.0:
+              schema:
+                $ref: '#/components/schemas/ListStateMachinesResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+components:
+  securitySchemes:
+    awsSigV4:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: >-
+        AWS Signature Version 4. The authorization header includes the credential,
+        signed headers, and signature. Use AWS SDK for automatic signing.
+  parameters:
+    XAmzTarget-CreateStateMachine:
+      name: X-Amz-Target
+      in: header
+      required: true
+      schema:
+        type: string
+        enum: [AmazonStates.CreateStateMachine]
+    XAmzTarget-ListStateMachines:
+      name: X-Amz-Target
+      in: header
+      required: true
+      schema:
+        type: string
+        enum: [AmazonStates.ListStateMachines]
+  responses:
+    BadRequest:
+      description: Invalid request parameters
+      content:
+        application/x-amz-json-1.0:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Conflict:
+      description: Resource conflict
+      content:
+        application/x-amz-json-1.0:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Authentication required
+      content:
+        application/x-amz-json-1.0:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type: string
+    CreateStateMachineRequest:
+      type: object
+      required:
+        - name
+        - definition
+        - roleArn
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 80
+          description: State machine name (no spaces, brackets, or special characters)
+        definition:
+          type: string
+          minLength: 1
+          maxLength: 1048576
+          description: Amazon States Language JSON definition of the state machine
+        roleArn:
+          type: string
+          minLength: 1
+          maxLength: 256
+          description: IAM role ARN granting Step Functions permissions
+        type:
+          type: string
+          enum: [STANDARD, EXPRESS]
+          default: STANDARD
+          description: State machine type
+        loggingConfiguration:
+          $ref: '#/components/schemas/LoggingConfiguration'
+        tracingConfiguration:
+          $ref: '#/components/schemas/TracingConfiguration'
+        encryptionConfiguration:
+          $ref: '#/components/schemas/EncryptionConfiguration'
+        publish:
+          type: boolean
+          default: false
+          description: Whether to publish version 1 on creation
+        versionDescription:
+          type: string
+          maxLength: 256
+          description: Description for the initial version (requires publish=true)
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tag'
+    CreateStateMachineResponse:
+      type: object
+      properties:
+        stateMachineArn:
+          type: string
+          description: ARN identifying the created state machine
+        creationDate:
+          type: number
+          description: Unix timestamp of creation
+        stateMachineVersionArn:
+          type: string
+          description: ARN of version 1 if publish was true
+    ListStateMachinesRequest:
+      type: object
+      properties:
+        maxResults:
+          type: integer
+          minimum: 1
+          maximum: 1000
+          description: Maximum number of results to return
+        nextToken:
+          type: string
+          description: Pagination token from previous response
+    ListStateMachinesResponse:
+      type: object
+      required:
+        - stateMachines
+      properties:
+        stateMachines:
+          type: array
+          items:
+            $ref: '#/components/schemas/StateMachineListItem'
+        nextToken:
+          type: string
+          description: Token for retrieving next page of results
+    StateMachineListItem:
+      type: object
+      properties:
+        stateMachineArn:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+          enum: [STANDARD, EXPRESS]
+        creationDate:
+          type: number
+    StartExecutionRequest:
+      type: object
+      required:
+        - stateMachineArn
+      properties:
+        stateMachineArn:
+          type: string
+          minLength: 1
+          maxLength: 256
+          description: ARN of the state machine to execute
+        name:
+          type: string
+          minLength: 1
+          maxLength: 80
+          description: Optional unique execution name
+        input:
+          type: string
+          maxLength: 262144
+          description: JSON input for the execution
+        traceHeader:
+          type: string
+          maxLength: 256
+          description: X-Ray trace header
+    StartExecutionResponse:
+      type: object
+      properties:
+        executionArn:
+          type: string
+          description: ARN of the started execution
+        startDate:
+          type: number
+          description: Unix timestamp when execution started
+    DescribeExecutionRequest:
+      type: object
+      required:
+        - executionArn
+      properties:
+        executionArn:
+          type: string
+          description: ARN of the execution to describe
+        includedData:
+          type: string
+          description: Additional data to include in response
+    Execution:
+      type: object
+      properties:
+        executionArn:
+          type: string
+        stateMachineArn:
+          type: string
+        name:
+          type: string
+        status:
+          type: string
+          enum: [RUNNING, SUCCEEDED, FAILED, TIMED_OUT, ABORTED, PENDING_REDRIVE]
+        startDate:
+          type: number
+        stopDate:
+          type: number
+        input:
+          type: string
+        output:
+          type: string
+        traceHeader:
+          type: string
+    LoggingConfiguration:
+      type: object
+      properties:
+        level:
+          type: string
+          enum: [ALL, ERROR, FATAL, OFF]
+          default: OFF
+        includeExecutionData:
+          type: boolean
+        destinations:
+          type: array
+          items:
+            type: object
+            properties:
+              cloudWatchLogsLogGroup:
+                type: object
+                properties:
+                  logGroupArn:
+                    type: string
+    TracingConfiguration:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          default: false
+    EncryptionConfiguration:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [AWS_OWNED_KEY, CUSTOMER_MANAGED_KMS_KEY]
+        kmsKeyId:
+          type: string
+        kmsDataKeyReusePeriodSeconds:
+          type: integer
+          minimum: 60
+          maximum: 900
+    Tag:
+      type: object
+      required:
+        - key
+        - value
+      properties:
+        key:
+          type: string
+          description: Tag key
+        value:
+          type: string
+          description: Tag value
+    StateMachine:
+      type: object
+      properties:
+        stateMachineArn:
+          type: string
+        name:
+          type: string
+        status:
+          type: string
+          enum: [ACTIVE, DELETING]
+        definition:
+          type: string
+        roleArn:
+          type: string
+        type:
+          type: string
+          enum: [STANDARD, EXPRESS]
+        creationDate:
+          type: number
+        loggingConfiguration:
+          $ref: '#/components/schemas/LoggingConfiguration'
+        tracingConfiguration:
+          $ref: '#/components/schemas/TracingConfiguration'
+        label:
+          type: string
+        revisionId:
+          type: string
+        description:
+          type: string
+    Activity:
+      type: object
+      properties:
+        activityArn:
+          type: string
+        name:
+          type: string
+        creationDate:
+          type: number

@@ -1,0 +1,456 @@
+naftiko: "1.0.0-alpha1"
+
+info:
+  label: "AWS Step Functions Workflow Orchestration"
+  description: >-
+    Workflow orchestration capabilities using AWS Step Functions for building,
+    deploying, and monitoring state machine-based distributed applications.
+    Covers the full lifecycle from state machine creation and versioning through
+    execution management and activity worker coordination.
+  tags:
+    - AWS
+    - Step Functions
+    - Serverless
+    - Workflow
+    - Orchestration
+    - State Machine
+    - Automation
+  created: "2026-05-02"
+  modified: "2026-05-02"
+
+binds:
+  - namespace: env
+    keys:
+      AWS_ACCESS_KEY_ID: AWS_ACCESS_KEY_ID
+      AWS_SECRET_ACCESS_KEY: AWS_SECRET_ACCESS_KEY
+      AWS_REGION: AWS_REGION
+      AWS_SIGV4_AUTH: AWS_SIGV4_AUTH
+
+capability:
+  consumes:
+    - import: step-functions
+      location: ./shared/step-functions.yaml
+
+  exposes:
+    - type: rest
+      port: 8080
+      namespace: workflow-orchestration-api
+      description: "Unified REST API for AWS Step Functions workflow orchestration."
+      resources:
+        - path: /v1/state-machines
+          name: state-machines
+          description: State machine lifecycle management
+          operations:
+            - method: GET
+              name: list-state-machines
+              description: List all state machines in the account
+              call: "step-functions.list-state-machines"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+            - method: POST
+              name: create-state-machine
+              description: Create a new state machine with ASL definition
+              call: "step-functions.create-state-machine"
+              with:
+                name: "rest.name"
+                definition: "rest.definition"
+                roleArn: "rest.roleArn"
+                type: "rest.type"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+        - path: /v1/state-machines/{arn}/describe
+          name: describe-state-machine
+          description: Get state machine configuration and definition
+          operations:
+            - method: GET
+              name: describe-state-machine
+              description: Describe a specific state machine
+              call: "step-functions.describe-state-machine"
+              with:
+                stateMachineArn: "rest.arn"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+        - path: /v1/state-machines/{arn}/validate
+          name: validate-definition
+          description: Validate state machine definitions before deployment
+          operations:
+            - method: POST
+              name: validate-state-machine-definition
+              description: Validate an Amazon States Language definition
+              call: "step-functions.validate-state-machine-definition"
+              with:
+                definition: "rest.definition"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+        - path: /v1/state-machines/{arn}/versions
+          name: versions
+          description: State machine version management
+          operations:
+            - method: GET
+              name: list-state-machine-versions
+              description: List published versions
+              call: "step-functions.list-state-machine-versions"
+              with:
+                stateMachineArn: "rest.arn"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+            - method: POST
+              name: publish-version
+              description: Publish a new immutable version
+              call: "step-functions.publish-state-machine-version"
+              with:
+                stateMachineArn: "rest.arn"
+                description: "rest.description"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+        - path: /v1/state-machines/{arn}/aliases
+          name: aliases
+          description: State machine alias management for deployment routing
+          operations:
+            - method: GET
+              name: list-aliases
+              description: List all aliases for a state machine
+              call: "step-functions.list-state-machine-aliases"
+              with:
+                stateMachineArn: "rest.arn"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+            - method: POST
+              name: create-alias
+              description: Create a routing alias (e.g., PROD, STAGING)
+              call: "step-functions.create-state-machine-alias"
+              with:
+                name: "rest.name"
+                routingConfiguration: "rest.routingConfiguration"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+        - path: /v1/executions
+          name: executions
+          description: State machine execution management
+          operations:
+            - method: POST
+              name: start-execution
+              description: Start a new asynchronous execution
+              call: "step-functions.start-execution"
+              with:
+                stateMachineArn: "rest.stateMachineArn"
+                name: "rest.name"
+                input: "rest.input"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+            - method: GET
+              name: list-executions
+              description: List executions for a state machine
+              call: "step-functions.list-executions"
+              with:
+                stateMachineArn: "rest.stateMachineArn"
+                statusFilter: "rest.statusFilter"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+        - path: /v1/executions/{arn}/describe
+          name: describe-execution
+          description: Execution inspection
+          operations:
+            - method: GET
+              name: describe-execution
+              description: Get execution status and I/O
+              call: "step-functions.describe-execution"
+              with:
+                executionArn: "rest.arn"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+        - path: /v1/executions/{arn}/history
+          name: execution-history
+          description: Execution event history
+          operations:
+            - method: GET
+              name: get-execution-history
+              description: Retrieve the execution event log
+              call: "step-functions.get-execution-history"
+              with:
+                executionArn: "rest.arn"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+        - path: /v1/executions/{arn}/stop
+          name: stop-execution
+          description: Stop running executions
+          operations:
+            - method: POST
+              name: stop-execution
+              description: Stop a running execution
+              call: "step-functions.stop-execution"
+              with:
+                executionArn: "rest.arn"
+                error: "rest.error"
+                cause: "rest.cause"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+        - path: /v1/sync-executions
+          name: sync-executions
+          description: Synchronous Express workflow execution
+          operations:
+            - method: POST
+              name: start-sync-execution
+              description: Start and wait for Express workflow result
+              call: "step-functions.start-sync-execution"
+              with:
+                stateMachineArn: "rest.stateMachineArn"
+                input: "rest.input"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+        - path: /v1/activities
+          name: activities
+          description: Activity worker management
+          operations:
+            - method: GET
+              name: list-activities
+              description: List all activity resources
+              call: "step-functions.list-activities"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+            - method: POST
+              name: create-activity
+              description: Create an activity for worker-based task processing
+              call: "step-functions.create-activity"
+              with:
+                name: "rest.name"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+        - path: /v1/activities/tasks
+          name: activity-tasks
+          description: Activity task polling and completion
+          operations:
+            - method: POST
+              name: get-activity-task
+              description: Poll for a task from an activity queue
+              call: "step-functions.get-activity-task"
+              with:
+                activityArn: "rest.activityArn"
+                workerName: "rest.workerName"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+    - type: mcp
+      port: 9090
+      namespace: workflow-orchestration-mcp
+      transport: http
+      description: "MCP server for AI-assisted AWS Step Functions workflow orchestration."
+      tools:
+        - name: list-state-machines
+          description: >-
+            List all AWS Step Functions state machines in the current account and region.
+          hints:
+            readOnly: true
+            openWorld: true
+          call: "step-functions.list-state-machines"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: describe-state-machine
+          description: >-
+            Get the full definition and configuration of a specific state machine.
+          hints:
+            readOnly: true
+            openWorld: true
+          call: "step-functions.describe-state-machine"
+          with:
+            stateMachineArn: "tools.stateMachineArn"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: create-state-machine
+          description: >-
+            Create a new AWS Step Functions state machine with an Amazon States
+            Language definition and IAM role ARN.
+          hints:
+            readOnly: false
+            destructive: false
+          call: "step-functions.create-state-machine"
+          with:
+            name: "tools.name"
+            definition: "tools.definition"
+            roleArn: "tools.roleArn"
+            type: "tools.type"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: validate-state-machine-definition
+          description: >-
+            Validate an Amazon States Language (ASL) definition without creating
+            a state machine. Use before deploying to check for syntax errors.
+          hints:
+            readOnly: true
+            openWorld: false
+          call: "step-functions.validate-state-machine-definition"
+          with:
+            definition: "tools.definition"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: start-execution
+          description: >-
+            Start an asynchronous AWS Step Functions state machine execution
+            with optional JSON input.
+          hints:
+            readOnly: false
+            destructive: false
+          call: "step-functions.start-execution"
+          with:
+            stateMachineArn: "tools.stateMachineArn"
+            name: "tools.name"
+            input: "tools.input"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: start-sync-execution
+          description: >-
+            Start and wait for the result of an Express (synchronous) workflow execution.
+            Returns output when the execution completes.
+          hints:
+            readOnly: false
+            destructive: false
+          call: "step-functions.start-sync-execution"
+          with:
+            stateMachineArn: "tools.stateMachineArn"
+            input: "tools.input"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: describe-execution
+          description: >-
+            Get the status, input, and output of a specific state machine execution.
+          hints:
+            readOnly: true
+            openWorld: true
+          call: "step-functions.describe-execution"
+          with:
+            executionArn: "tools.executionArn"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: list-executions
+          description: >-
+            List executions for a state machine, optionally filtered by status
+            (RUNNING, SUCCEEDED, FAILED, TIMED_OUT, ABORTED).
+          hints:
+            readOnly: true
+            openWorld: true
+          call: "step-functions.list-executions"
+          with:
+            stateMachineArn: "tools.stateMachineArn"
+            statusFilter: "tools.statusFilter"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: get-execution-history
+          description: >-
+            Retrieve the complete event history for a state machine execution,
+            showing all state transitions and task results.
+          hints:
+            readOnly: true
+            openWorld: true
+          call: "step-functions.get-execution-history"
+          with:
+            executionArn: "tools.executionArn"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: stop-execution
+          description: >-
+            Stop a running state machine execution. Optionally specify an error
+            code and cause for the stoppage.
+          hints:
+            readOnly: false
+            destructive: true
+            idempotent: true
+          call: "step-functions.stop-execution"
+          with:
+            executionArn: "tools.executionArn"
+            error: "tools.error"
+            cause: "tools.cause"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: publish-state-machine-version
+          description: >-
+            Publish an immutable version of the current state machine definition.
+            Versions are referenced by aliases for safe deployments.
+          hints:
+            readOnly: false
+            destructive: false
+          call: "step-functions.publish-state-machine-version"
+          with:
+            stateMachineArn: "tools.stateMachineArn"
+            description: "tools.description"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: redrive-execution
+          description: >-
+            Redrive a failed or aborted execution from where it left off,
+            using the same input.
+          hints:
+            readOnly: false
+            destructive: false
+          call: "step-functions.redrive-execution"
+          with:
+            executionArn: "tools.executionArn"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: list-activities
+          description: >-
+            List all Step Functions activity resources used for worker-based tasks.
+          hints:
+            readOnly: true
+            openWorld: true
+          call: "step-functions.list-activities"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: send-task-success
+          description: >-
+            Report successful completion of an activity task to Step Functions.
+            The task token comes from GetActivityTask.
+          hints:
+            readOnly: false
+            destructive: false
+          call: "step-functions.send-task-success"
+          with:
+            taskToken: "tools.taskToken"
+            output: "tools.output"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: send-task-failure
+          description: >-
+            Report that an activity task has failed to Step Functions so the
+            workflow can apply retry logic or transition to a Fail state.
+          hints:
+            readOnly: false
+            destructive: false
+          call: "step-functions.send-task-failure"
+          with:
+            taskToken: "tools.taskToken"
+            error: "tools.error"
+            cause: "tools.cause"
+          outputParameters:
+            - type: object
+              mapping: "$."

@@ -1,0 +1,125 @@
+vocabulary:
+  name: AWS Step Functions Vocabulary
+  description: >-
+    Domain vocabulary for AWS Step Functions serverless orchestration service,
+    covering state machines, executions, activities, Amazon States Language,
+    and workflow orchestration concepts.
+  version: '1.0'
+  created: '2026-05-02'
+  modified: '2026-05-02'
+
+terms:
+  - term: State Machine
+    definition: >-
+      A workflow definition in AWS Step Functions consisting of a collection of
+      states that process input, make decisions, invoke tasks, and produce output.
+      Defined using the Amazon States Language.
+    category: Core
+
+  - term: Amazon States Language (ASL)
+    definition: >-
+      The JSON-based structured language used to define state machine workflows
+      in AWS Step Functions. ASL specifies states, transitions, input/output
+      processing, error handling, and retry logic.
+    category: Core
+
+  - term: Standard Workflow
+    definition: >-
+      A state machine type with exactly-once execution semantics, suitable for
+      long-running processes up to one year, with full execution history and
+      billed per state transition.
+    category: Execution Model
+
+  - term: Express Workflow
+    definition: >-
+      A state machine type optimized for high-volume, short-duration workloads
+      with at-least-once execution semantics, billed per execution duration.
+    category: Execution Model
+
+  - term: Execution
+    definition: >-
+      A single run of a state machine, from input to output, that progresses
+      through the defined states. Each execution has a unique ARN.
+    category: Core
+
+  - term: Activity
+    definition: >-
+      A Step Functions resource representing work performed by an external
+      application (activity worker) that polls for tasks via the API.
+    category: Core
+
+  - term: Task Token
+    definition: >-
+      An opaque token passed to an activity worker or Lambda function enabling
+      callback-based task completion via SendTaskSuccess or SendTaskFailure.
+    category: Integration
+
+  - term: State Machine Version
+    definition: >-
+      An immutable snapshot of a state machine definition published with
+      PublishStateMachineVersion. Referenced by aliases for safe deployments.
+    category: Deployment
+
+  - term: State Machine Alias
+    definition: >-
+      A named pointer (e.g., PROD, STAGING) referencing a specific state machine
+      version or routing configuration for canary/linear deployments.
+    category: Deployment
+
+  - term: Map State
+    definition: >-
+      A state type that iterates over an input array, processing each element
+      in parallel. Distributed Map enables processing millions of items.
+    category: State Types
+
+  - term: Wait State
+    definition: >-
+      A state that pauses execution for a fixed duration or until a timestamp,
+      or until a task token callback is received.
+    category: State Types
+
+  - term: Choice State
+    definition: >-
+      A state that evaluates input data against conditions and routes to
+      different states based on the matching rule.
+    category: State Types
+
+  - term: Parallel State
+    definition: >-
+      A state that starts multiple branches of a workflow concurrently and
+      waits for all branches to complete before proceeding.
+    category: State Types
+
+  - term: Task State
+    definition: >-
+      A state that invokes a unit of work, such as a Lambda function, AWS SDK
+      integration, or activity worker, and waits for the result.
+    category: State Types
+
+  - term: Execution ARN
+    definition: >-
+      The Amazon Resource Name uniquely identifying a specific execution instance
+      of a state machine.
+    category: Identifiers
+
+  - term: Input/Output Processing
+    definition: >-
+      ASL features (InputPath, OutputPath, ResultPath, Parameters, ResultSelector)
+      that transform data flowing between states in a workflow.
+    category: Data Processing
+
+  - term: Retry/Catch
+    definition: >-
+      Built-in error handling in ASL allowing states to retry failed tasks
+      with exponential backoff and catch specific error types.
+    category: Error Handling
+
+categories:
+  - Core
+  - Execution Model
+  - Deployment
+  - State Types
+  - Integration
+  - Identifiers
+  - Data Processing
+  - Error Handling

@@ -1,0 +1,53 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "sfn": "https://aws.amazon.com/step-functions/vocab/",
+    "schema": "https://schema.org/",
+    "aws": "https://aws.amazon.com/vocab/",
+    "StateMachine": {
+      "@id": "sfn:StateMachine",
+      "@type": "@id"
+    },
+    "Execution": {
+      "@id": "sfn:Execution",
+      "@type": "@id"
+    },
+    "Activity": {
+      "@id": "sfn:Activity",
+      "@type": "@id"
+    },
+    "StateMachineVersion": {
+      "@id": "sfn:StateMachineVersion",
+      "@type": "@id"
+    },
+    "StateMachineAlias": {
+      "@id": "sfn:StateMachineAlias",
+      "@type": "@id"
+    },
+    "stateMachineArn": {
+      "@id": "aws:arn"
+    },
+    "executionArn": {
+      "@id": "aws:arn"
+    },
+    "activityArn": {
+      "@id": "aws:arn"
+    },
+    "name": "schema:name",
+    "description": "schema:description",
+    "definition": "sfn:stateMachineDefinition",
+    "roleArn": "aws:iamRoleArn",
+    "type": "sfn:workflowType",
+    "status": "sfn:status",
+    "creationDate": "schema:dateCreated",
+    "input": "sfn:executionInput",
+    "output": "sfn:executionOutput",
+    "startDate": "schema:startDate",
+    "stopDate": "schema:endDate",
+    "loggingConfiguration": "sfn:loggingConfiguration",
+    "tracingConfiguration": "sfn:tracingConfiguration",
+    "tags": "aws:tags",
+    "taskToken": "sfn:taskToken",
+    "revisionId": "schema:version"
+  }
+}
