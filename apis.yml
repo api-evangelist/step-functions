@@ -44,7 +44,7 @@ apis:
         url: https://docs.aws.amazon.com/step-functions/
       - type: Reference
         url: https://docs.aws.amazon.com/step-functions/latest/apireference/Welcome.html
-      - type: Getting Started
+      - type: GettingStarted
         url: https://docs.aws.amazon.com/step-functions/latest/dg/getting-started.html
       - type: OpenAPI
         url: >-
@@ -56,7 +56,7 @@ common:
     url: https://aws.amazon.com/step-functions/
   - type: Documentation
     url: https://docs.aws.amazon.com/step-functions/
-  - type: GitHub Organization
+  - type: GitHubOrganization
     url: https://github.com/aws
   - type: Console
     url: https://console.aws.amazon.com/states/
