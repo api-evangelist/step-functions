@@ -1,0 +1,47 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "AWS Step Functions API",
+    "version": "2016-11-23"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "Authorization",
+      "value": "{{Authorization}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "State Machines",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create State Machine",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://states.{region}.amazonaws.com/",
+            "headers": [
+              {
+                "name": "X-Amz-Target",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a state machine. A state machine consists of a collection of states that can do work (Task states), determine transitions (Choice states), stop with an error (Fail states), and more. Optionally publish version 1 on creation by setting publish to true."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,361 @@
+{
+  "item": [
+    {
+      "id": "be9c874d-2785-4e4c-8104-04d043c5ceb3",
+      "name": "State Machines",
+      "description": {
+        "content": "Create, describe, update, delete, and list state machines",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "2c45c13f-926f-4d87-87bd-6ad48b32d178",
+          "name": "Create State Machine",
+          "request": {
+            "name": "Create State Machine",
+            "description": {
+              "content": "Creates a state machine. A state machine consists of a collection of states that can do work (Task states), determine transitions (Choice states), stop with an error (Fail states), and more. Optionally publish version 1 on creation by setting publish to true.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": "AWS region identifier (This can only be one of us-east-1,us-east-2,us-west-1,us-west-2,eu-west-1,eu-central-1,ap-northeast-1,ap-southeast-1,ap-southeast-2)",
+                  "type": "any",
+                  "value": "{{region}}",
+                  "key": "region"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "X-Amz-Target",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/x-amz-json-1.0"
+              },
+              {
+                "key": "Accept",
+                "value": "application/x-amz-json-1.0"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"definition\": \"<string>\",\n  \"roleArn\": \"<string>\",\n  \"type\": \"STANDARD\",\n  \"loggingConfiguration\": {\n    \"level\": \"OFF\",\n    \"includeExecutionData\": \"<boolean>\",\n    \"destinations\": [\n      {\n        \"cloudWatchLogsLogGroup\": {\n          \"logGroupArn\": \"<string>\"\n        }\n      },\n      {\n        \"cloudWatchLogsLogGroup\": {\n          \"logGroupArn\": \"<string>\"\n        }\n      }\n    ]\n  },\n  \"tracingConfiguration\": {\n    \"enabled\": false\n  },\n  \"encryptionConfiguration\": {\n    \"type\": \"<string>\",\n    \"kmsKeyId\": \"<string>\",\n    \"kmsDataKeyReusePeriodSeconds\": \"<integer>\"\n  },\n  \"publish\": false,\n  \"versionDescription\": \"<string>\",\n  \"tags\": [\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<string>\"\n    }\n  ]\n}"
+            }
+          },
+          "response": [
+            {
+              "id": "d6ff922a-932c-403e-9afd-611783b7da25",
+              "name": "State machine created successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "AWS region identifier (This can only be one of us-east-1,us-east-2,us-west-1,us-west-2,eu-west-1,eu-central-1,ap-northeast-1,ap-southeast-1,ap-southeast-2)",
+                      "type": "any",
+                      "value": "{{region}}",
+                      "key": "region"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "X-Amz-Target",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/x-amz-json-1.0"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"definition\": \"<string>\",\n  \"roleArn\": \"<string>\",\n  \"type\": \"STANDARD\",\n  \"loggingConfiguration\": {\n    \"level\": \"OFF\",\n    \"includeExecutionData\": \"<boolean>\",\n    \"destinations\": [\n      {\n        \"cloudWatchLogsLogGroup\": {\n          \"logGroupArn\": \"<string>\"\n        }\n      },\n      {\n        \"cloudWatchLogsLogGroup\": {\n          \"logGroupArn\": \"<string>\"\n        }\n      }\n    ]\n  },\n  \"tracingConfiguration\": {\n    \"enabled\": false\n  },\n  \"encryptionConfiguration\": {\n    \"type\": \"<string>\",\n    \"kmsKeyId\": \"<string>\",\n    \"kmsDataKeyReusePeriodSeconds\": \"<integer>\"\n  },\n  \"publish\": false,\n  \"versionDescription\": \"<string>\",\n  \"tags\": [\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<string>\"\n    }\n  ]\n}"
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/x-amz-json-1.0"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "dd4d849f-05af-4cfc-b220-408de84f65b3",
+              "name": "Invalid request parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "AWS region identifier (This can only be one of us-east-1,us-east-2,us-west-1,us-west-2,eu-west-1,eu-central-1,ap-northeast-1,ap-southeast-1,ap-southeast-2)",
+                      "type": "any",
+                      "value": "{{region}}",
+                      "key": "region"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "X-Amz-Target",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/x-amz-json-1.0"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"definition\": \"<string>\",\n  \"roleArn\": \"<string>\",\n  \"type\": \"STANDARD\",\n  \"loggingConfiguration\": {\n    \"level\": \"OFF\",\n    \"includeExecutionData\": \"<boolean>\",\n    \"destinations\": [\n      {\n        \"cloudWatchLogsLogGroup\": {\n          \"logGroupArn\": \"<string>\"\n        }\n      },\n      {\n        \"cloudWatchLogsLogGroup\": {\n          \"logGroupArn\": \"<string>\"\n        }\n      }\n    ]\n  },\n  \"tracingConfiguration\": {\n    \"enabled\": false\n  },\n  \"encryptionConfiguration\": {\n    \"type\": \"<string>\",\n    \"kmsKeyId\": \"<string>\",\n    \"kmsDataKeyReusePeriodSeconds\": \"<integer>\"\n  },\n  \"publish\": false,\n  \"versionDescription\": \"<string>\",\n  \"tags\": [\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<string>\"\n    }\n  ]\n}"
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/x-amz-json-1.0"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "f7c74c6e-1d21-4d27-9292-da1e4dd521e2",
+              "name": "Resource conflict",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "AWS region identifier (This can only be one of us-east-1,us-east-2,us-west-1,us-west-2,eu-west-1,eu-central-1,ap-northeast-1,ap-southeast-1,ap-southeast-2)",
+                      "type": "any",
+                      "value": "{{region}}",
+                      "key": "region"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "X-Amz-Target",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/x-amz-json-1.0"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"definition\": \"<string>\",\n  \"roleArn\": \"<string>\",\n  \"type\": \"STANDARD\",\n  \"loggingConfiguration\": {\n    \"level\": \"OFF\",\n    \"includeExecutionData\": \"<boolean>\",\n    \"destinations\": [\n      {\n        \"cloudWatchLogsLogGroup\": {\n          \"logGroupArn\": \"<string>\"\n        }\n      },\n      {\n        \"cloudWatchLogsLogGroup\": {\n          \"logGroupArn\": \"<string>\"\n        }\n      }\n    ]\n  },\n  \"tracingConfiguration\": {\n    \"enabled\": false\n  },\n  \"encryptionConfiguration\": {\n    \"type\": \"<string>\",\n    \"kmsKeyId\": \"<string>\",\n    \"kmsDataKeyReusePeriodSeconds\": \"<integer>\"\n  },\n  \"publish\": false,\n  \"versionDescription\": \"<string>\",\n  \"tags\": [\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<string>\"\n    }\n  ]\n}"
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/x-amz-json-1.0"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "aca83cb9-7176-4eef-a921-03d358f8c32a",
+      "name": "Executions",
+      "description": {
+        "content": "Start, stop, describe, and list state machine executions",
+        "type": "text/plain"
+      },
+      "item": [],
+      "event": []
+    },
+    {
+      "id": "1949db43-6cde-4301-852f-afc56a60485c",
+      "name": "Activities",
+      "description": {
+        "content": "Create, describe, delete, and manage activity workers",
+        "type": "text/plain"
+      },
+      "item": [],
+      "event": []
+    },
+    {
+      "id": "972a05bf-42f3-42d2-a4de-fd6ac355fee9",
+      "name": "Versions",
+      "description": {
+        "content": "Publish and manage state machine versions",
+        "type": "text/plain"
+      },
+      "item": [],
+      "event": []
+    },
+    {
+      "id": "2ffe6e3c-f416-42a0-b363-8de226ecab59",
+      "name": "Aliases",
+      "description": {
+        "content": "Create and manage state machine aliases",
+        "type": "text/plain"
+      },
+      "item": [],
+      "event": []
+    },
+    {
+      "id": "9f5561a8-4d2d-4593-8732-c1c7386b8c7d",
+      "name": "Map Runs",
+      "description": {
+        "content": "Describe and update Map state distributed runs",
+        "type": "text/plain"
+      },
+      "item": [],
+      "event": []
+    },
+    {
+      "id": "0ca06c38-0cf5-4ab9-bf23-975dde323d34",
+      "name": "Tasks",
+      "description": {
+        "content": "Activity worker task polling and completion",
+        "type": "text/plain"
+      },
+      "item": [],
+      "event": []
+    },
+    {
+      "id": "652d2ab2-f027-43cd-8771-114a1b0d2aa6",
+      "name": "Tags",
+      "description": {
+        "content": "Tag and untag AWS resources",
+        "type": "text/plain"
+      },
+      "item": [],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "AWS region identifier (This can only be one of us-east-1,us-east-2,us-west-1,us-west-2,eu-west-1,eu-central-1,ap-northeast-1,ap-southeast-1,ap-southeast-2)",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "us-east-1",
+      "key": "region"
+    },
+    {
+      "type": "string",
+      "value": "https://states.{{region}}.amazonaws.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "Authorization"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "a66e457b-4631-45f4-9812-7ddf61e178c6",
+    "name": "AWS Step Functions API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "AWS Step Functions API for creating and managing state machines, executing workflows, and coordinating distributed applications using the Amazon States Language. Supports Standard and Express state machine types with versioning, aliases, and activity workers.\n\nContact Support:\n Name: AWS Support",
+      "type": "text/plain"
+    }
+  }
+}
