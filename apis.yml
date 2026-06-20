@@ -6,7 +6,7 @@ description: >-
   parallel execution, error handling, and integrates with over 200 AWS services. Step Functions uses the Amazon States
   Language (ASL) for defining workflow logic as JSON-based state machine definitions.
 type: Index
-image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
 tags:
   - API Composition
   - Serverless Orchestration
