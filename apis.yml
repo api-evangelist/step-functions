@@ -47,6 +47,14 @@ apis:
       - type: Pricing
         url: https://aws.amazon.com/step-functions/pricing/
 common:
+  - type: TrustCenter
+    url: security/step-functions-trust-center.yml
+  - type: VulnerabilityDisclosure
+    url: security/step-functions-vulnerability-disclosure.yml
+  - type: DomainSecurity
+    url: security/step-functions-domain-security.yml
+  - type: Authentication
+    url: authentication/step-functions-authentication.yml
   - type: Website
     url: https://aws.amazon.com/step-functions/
   - type: Documentation

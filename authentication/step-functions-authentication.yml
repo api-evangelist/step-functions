@@ -1,0 +1,17 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/step-functions-openapi.yml
+summary:
+  types:
+  - apiKey
+  api_key_in:
+  - header
+schemes:
+- name: awsSigV4
+  type: apiKey
+  in: header
+  parameter: Authorization
+  description: AWS Signature Version 4. The authorization header includes the credential, signed
+    headers, and signature. Use AWS SDK for automatic signing.
+  sources:
+  - openapi/step-functions-openapi.yml
