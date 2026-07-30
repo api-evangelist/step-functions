@@ -6,7 +6,20 @@ description: >-
   parallel execution, error handling, and integrates with over 200 AWS services. Step Functions uses the Amazon States
   Language (ASL) for defining workflow logic as JSON-based state machine definitions.
 type: Index
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+accessModel:
+  pricing: freemium
+  onboarding: self-serve
+  trial: false
+  try_now: true
+  public: false
+  label: Freemium · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/step-functions.png
 tags:
   - API Composition
   - Serverless Orchestration
@@ -19,33 +32,24 @@ created: '2026-03-27'
 modified: '2026-05-19'
 specificationVersion: '0.19'
 apis:
-  - aid: step-functions:step-functions
-    name: AWS Step Functions API
-    description: >-
-      The AWS Step Functions API enables creating, managing, and executing state machines and activities. Key operations
-      include creating and deleting state machines, starting and stopping executions, listing execution history,
-      managing state machine versions and aliases, tagging resources, and sending task heartbeats from activity workers.
-      The API uses AWS Signature Version 4 (SigV4) authentication.
-    humanURL: https://aws.amazon.com/step-functions/
-    baseURL: https://states.{region}.amazonaws.com
-    tags:
-      - Serverless
-      - Workflow
-      - State Machine
-      - Orchestration
-      - AWS
-    properties:
-      - type: Documentation
-        url: https://docs.aws.amazon.com/step-functions/
-      - type: Reference
-        url: https://docs.aws.amazon.com/step-functions/latest/apireference/Welcome.html
-      - type: GettingStarted
-        url: https://docs.aws.amazon.com/step-functions/latest/dg/getting-started.html
-      - type: OpenAPI
-        url: >-
-          https://raw.githubusercontent.com/api-evangelist/step-functions/refs/heads/main/openapi/step-functions-openapi.yml
-      - type: Pricing
-        url: https://aws.amazon.com/step-functions/pricing/
+- aid: step-functions:step-functions-state-machines-api
+  name: AWS Step Functions State Machines API
+  description: Create, describe, update, delete, and list state machines
+  humanURL: https://aws.amazon.com/step-functions/
+  baseURL: https://states.{region}.amazonaws.com
+  tags:
+  - State Machines
+  properties:
+  - type: OpenAPI
+    url: openapi/step-functions-state-machines-api-openapi.yml
+  - type: Documentation
+    url: https://docs.aws.amazon.com/step-functions/
+  - type: Reference
+    url: https://docs.aws.amazon.com/step-functions/latest/apireference/Welcome.html
+  - type: GettingStarted
+    url: https://docs.aws.amazon.com/step-functions/latest/dg/getting-started.html
+  - type: Pricing
+    url: https://aws.amazon.com/step-functions/pricing/
 common:
   - type: AgenticAccess
     url: agentic-access/step-functions-agentic-access.yml
