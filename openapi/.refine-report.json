@@ -1,0 +1,14 @@
+{
+  "provider": "step-functions",
+  "sources": [
+    "step-functions-state-machines-api-openapi.yml"
+  ],
+  "outputs": [
+    "step-functions-state-machines-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
