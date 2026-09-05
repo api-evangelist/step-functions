@@ -1,4 +1,4 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
   title: AWS Step Functions State Machines API
   description: AWS Step Functions API for creating and managing state machines, executing workflows, and coordinating distributed applications using the Amazon States Language. Supports Standard and Express state machine types with versioning, aliases, and activity workers.
@@ -59,20 +59,30 @@ paths:
         '409':
           $ref: '#/components/responses/Conflict'
 components:
-  responses:
-    BadRequest:
-      description: Invalid request parameters
-      content:
-        application/x-amz-json-1.0:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Conflict:
-      description: Resource conflict
-      content:
-        application/x-amz-json-1.0:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
+    LoggingConfiguration:
+      type: object
+      properties:
+        level:
+          type: string
+          enum:
+          - ALL
+          - ERROR
+          - FATAL
+          - false
+          default: false
+        includeExecutionData:
+          type: boolean
+        destinations:
+          type: array
+          items:
+            type: object
+            properties:
+              cloudWatchLogsLogGroup:
+                type: object
+                properties:
+                  logGroupArn:
+                    type: string
     CreateStateMachineRequest:
       type: object
       required:
@@ -120,29 +130,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Tag'
-    LoggingConfiguration:
-      type: object
-      properties:
-        level:
-          type: string
-          enum:
-          - ALL
-          - ERROR
-          - FATAL
-          - false
-          default: false
-        includeExecutionData:
-          type: boolean
-        destinations:
-          type: array
-          items:
-            type: object
-            properties:
-              cloudWatchLogsLogGroup:
-                type: object
-                properties:
-                  logGroupArn:
-                    type: string
     EncryptionConfiguration:
       type: object
       properties:
@@ -157,31 +144,6 @@ components:
           type: integer
           minimum: 60
           maximum: 900
-    TracingConfiguration:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-          default: false
-    CreateStateMachineResponse:
-      type: object
-      properties:
-        stateMachineArn:
-          type: string
-          description: ARN identifying the created state machine
-        creationDate:
-          type: number
-          description: Unix timestamp of creation
-        stateMachineVersionArn:
-          type: string
-          description: ARN of version 1 if publish was true
-    Error:
-      type: object
-      properties:
-        message:
-          type: string
-        code:
-          type: string
     Tag:
       type: object
       required:
@@ -194,6 +156,31 @@ components:
         value:
           type: string
           description: Tag value
+    TracingConfiguration:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          default: false
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type: string
+    CreateStateMachineResponse:
+      type: object
+      properties:
+        stateMachineArn:
+          type: string
+          description: ARN identifying the created state machine
+        creationDate:
+          type: number
+          description: Unix timestamp of creation
+        stateMachineVersionArn:
+          type: string
+          description: ARN of version 1 if publish was true
   parameters:
     XAmzTarget-CreateStateMachine:
       name: X-Amz-Target
@@ -203,6 +190,19 @@ components:
         type: string
         enum:
         - AmazonStates.CreateStateMachine
+  responses:
+    BadRequest:
+      description: Invalid request parameters
+      content:
+        application/x-amz-json-1.0:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Conflict:
+      description: Resource conflict
+      content:
+        application/x-amz-json-1.0:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     awsSigV4:
       type: apiKey
